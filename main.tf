@@ -46,7 +46,7 @@ module "vault_server_sg" {
 }
 
 module "consul_client_sg" {
-  source = "github.com/hashicorp-modules/consul-client-ports-aws"
+  source = "github.com/Traibe/consul-client-ports-aws"
 
   create      = "${var.create ? 1 : 0}"
   name        = "${var.name}-vault-consul-client"
@@ -88,14 +88,14 @@ resource "aws_launch_configuration" "vault" {
 }
 
 module "vault_lb_aws" {
-  source = "github.com/hashicorp-modules/vault-lb-aws"
+  source = "github.com/Traibe/vault-lb-aws"
 
   create             = "${var.create}"
   name               = "${var.name}"
   vpc_id             = "${var.vpc_id}"
   cidr_blocks        = ["${var.public ? "0.0.0.0/0" : var.vpc_cidr}"] # If there's a public IP, open port 22 for public access - DO NOT DO THIS IN PROD
   subnet_ids         = ["${var.subnet_ids}"]
-  is_internal_lb     = "${!var.public}"
+  is_internal_lb     = "${! var.public}"
   use_lb_cert        = "${var.use_lb_cert}"
   lb_cert            = "${var.lb_cert}"
   lb_private_key     = "${var.lb_private_key}"

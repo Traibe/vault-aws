@@ -80,7 +80,7 @@ output "zREADME" {
 Use the HTTP API with Consul DNS to write and read a generic secret with
   Vault's KV secret engine.
 
-  ${!var.use_lb_cert ? <<-EOT2
+  ${! var.use_lb_cert ? <<-EOT2
 
   If you're making HTTP API requests to Vault from the Bastion host,
   the below env var has been set for you.
@@ -117,7 +117,7 @@ Use the HTTP API with Consul DNS to write and read a generic secret with
         -k --cacert $${VAULT_CACERT} --cert $${VAULT_CLIENT_CERT} --key $${VAULT_CLIENT_KEY} \\
         $${VAULT_ADDR}/v1/secret/data/api | jq '.' # Read a KV secret"
   EOT3
-  }
+}
 EOT
 }
 
