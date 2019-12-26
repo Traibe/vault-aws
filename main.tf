@@ -5,14 +5,14 @@ terraform {
 module "consul_auto_join_instance_role" {
   source = "github.com/Traibe/consul-auto-join-instance-role-aws"
 
-  create = "${var.create ? 1 : 0}"
-  name   = "${var.name}"
+  create = var.create ? 1 : 0
+  name   = var.name
 }
 
 data "aws_ami" "vault" {
-  count       = "${var.create && var.image_id == "" ? 1 : 0}"
+  count       = var.create && var.image_id == "" ? 1 : 0
   most_recent = true
-  owners      = ["${var.ami_owner}"]
+  owners      = [var.ami_owner]
   name_regex  = "vault-image_${lower(var.release_version)}_vault_${lower(var.vault_version)}_consul_${lower(var.consul_version)}_${lower(var.os)}_${var.os_version}.*"
 
   filter {
