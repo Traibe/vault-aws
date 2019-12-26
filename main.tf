@@ -37,7 +37,7 @@ data "template_file" "vault_init" {
 }
 
 module "vault_server_sg" {
-  source = "github.com/hashicorp-modules/vault-server-ports-aws"
+  source = "github.com/Traibe/vault-server-ports-aws"
 
   create      = "${var.create ? 1 : 0}"
   name        = "${var.name}-vault-server"
