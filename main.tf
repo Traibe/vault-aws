@@ -55,7 +55,7 @@ module "consul_client_sg" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-  count = "${var.create ? 1 : 0}"
+  count = var.create ? 1 : 0
 
   security_group_id = "${module.vault_server_sg.vault_server_sg_id}"
   type              = "ingress"
@@ -66,7 +66,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_launch_configuration" "vault" {
-  count = "${var.create ? 1 : 0}"
+  count = var.create ? 1 : 0
 
   name_prefix                 = "${format("%s-vault-", var.name)}"
   associate_public_ip_address = "${var.public}"
@@ -74,7 +74,7 @@ resource "aws_launch_configuration" "vault" {
   instance_type               = "${var.instance_type}"
   image_id                    = "${var.image_id != "" ? var.image_id : element(concat(data.aws_ami.vault.*.id, list("")), 0)}" # TODO: Workaround for issue #11210
   iam_instance_profile        = "${var.instance_profile != "" ? var.instance_profile : module.consul_auto_join_instance_role.instance_profile_id}"
-  user_data                   = "${data.template_file.vault_init.rendered}"
+  user_data                   = "${data.template_file.vault_init[count.index].rendered}"
   key_name                    = "${var.ssh_key_name}"
 
   security_groups = [
