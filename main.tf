@@ -111,8 +111,8 @@ module "vault_lb_aws" {
 resource "aws_autoscaling_group" "vault" {
   count = "${var.create ? 1 : 0}"
 
-  name_prefix          = "${aws_launch_configuration.vault.name}"
-  launch_configuration = "${aws_launch_configuration.vault.id}"
+  name_prefix          = aws_launch_configuration.vault[count.index].name
+  launch_configuration = aws_launch_configuration.vault[count.index].id
   vpc_zone_identifier  = ["${var.subnet_ids}"]
   max_size             = "${var.instance_count != -1 ? var.instance_count : length(var.subnet_ids)}"
   min_size             = "${var.instance_count != -1 ? var.instance_count : length(var.subnet_ids)}"
