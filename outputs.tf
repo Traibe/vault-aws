@@ -1,5 +1,5 @@
 output "zREADME" {
-  value = <<README
+  value = <<-EOT
 # ------------------------------------------------------------------------------
 # ${var.name} Vault Dev Guide Setup
 # ------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ the below env vars have been set for you.
       -k --cacert $${VAULT_CACERT} --cert $${VAULT_CLIENT_CERT} --key $${VAULT_CLIENT_KEY} \\
       $${VAULT_ADDR}/v1/secret/data/api | jq '.' # Read a KV secret"
 }
-README
+EOT
 }
 
 output "consul_sg_id" {
