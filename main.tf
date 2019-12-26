@@ -113,20 +113,20 @@ resource "aws_autoscaling_group" "vault" {
 
   name_prefix          = aws_launch_configuration.vault[count.index].name
   launch_configuration = aws_launch_configuration.vault[count.index].id
-  vpc_zone_identifier  = ["${var.subnet_ids}"]
+  vpc_zone_identifier  = var.subnet_ids
   max_size             = "${var.instance_count != -1 ? var.instance_count : length(var.subnet_ids)}"
   min_size             = "${var.instance_count != -1 ? var.instance_count : length(var.subnet_ids)}"
   desired_capacity     = "${var.instance_count != -1 ? var.instance_count : length(var.subnet_ids)}"
   default_cooldown     = 30
   force_delete         = true
 
-  target_group_arns = ["${compact(concat(
+  target_group_arns = compact(concat(
     list(
       module.vault_lb_aws.vault_tg_http_8200_arn,
       module.vault_lb_aws.vault_tg_https_8200_arn,
     ),
     var.target_groups
-  ))}"]
+  ))
 
   tags = ["${concat(
     list(
